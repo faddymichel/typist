@@ -1,0 +1,20 @@
+{
+  "name": "@teatro13/typist",
+  "version": "1.0.0",
+  "description": "Command-Line Interface for Typist",
+  "author": "Faddy Michel Samaan <faddy@teatro13.com>",
+  "bin": {
+    "typist": "play/teatro.js"
+  },
+  "homepage": "https://github.com/teatro13/typist",
+  "repository": "github:teatro13/typist",
+  "bugs": "https://github.com/teatro13/typist/issues",
+  "license": "MIT",
+  "main": "play/index.js",
+  "files": [
+    "play/*.js"
+  ],
+  "dependencies": {
+    "@teatro13/teatro": "^2.0.1"
+  }
+}

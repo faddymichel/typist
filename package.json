@@ -10,11 +10,14 @@
   "repository": "github:teatro13/typist",
   "bugs": "https://github.com/teatro13/typist/issues",
   "license": "MIT",
+  "type": "module",
   "main": "play/index.js",
   "files": [
     "play/*.js"
   ],
   "dependencies": {
+    "@teatro13/cursor": "file:../cursor",
+    "@teatro13/scenarist": "file:../scenarist",
     "@teatro13/teatro": "^2.0.1"
   }
 }

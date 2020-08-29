@@ -1,29 +1,53 @@
-const events = [ 'new', 'load' ];
+import { Typist } from './typist.js';
 
-module .exports = function scenario$yallah ( participant ) {
+const scene = {};
+export default scene;
 
-const teatro = this;
-const interface = require ( 'readline' ) .createInterface ( {
+const signature = Symbol ();
 
-input: participant,
-output: participant,
-prompt: JSON .stringify ( {
+const characters = scene .characters = {};
+characters .events = [ 'page' ];
+characters .action = function action ( script ) {
 
-scene: 'page'
+const { scenarist, participant, teatro } = this;
 
-} )
+let stamp;
 
-} );
+switch ( script .character ) {
 
-participant .on ( 'error', () => {
+case 'new':
+case 'create':
+case 'add':
 
-interface .removeAllListeners ();
-interface .close ();
+const play = teatro .host ( Typist ( scenarist ), signature );
+stamp = teatro .issue ( play );
 
-} );
+break;
 
-interface .prompt ();
+case 'edit':
+case 'load':
 
-interface .on ( 'script', ( script ) => {} );
+stamp = script .action && script .action .stamp ? script .action .stamp : undefined;
+
+}
+
+if ( ! stamp )
+return;
+
+const ticket = teatro .retrieve ( stamp );
+
+participant .write ( JSON .stringify ( {
+
+scene: 'page',
+character: 'new',
+action: {
+
+stamp: stamp
+
+}
+
+} ) );
+
+teatro .play ( participant, ticket );
 
 };

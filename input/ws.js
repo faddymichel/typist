@@ -1,12 +1,12 @@
 export const establishment = function establishment () {
 
 const setting = this;
-const { scenarist, input, output } = setting;
+const { scenarist, input, output, ws } = setting;
 
-if ( typeof input !== 'object' )
+if ( typeof ws !== 'object' )
 return;
 
-const { scheme, host, port } = input;
+const { scheme, host, port } = ws;
 
 input .ws = new WebSocket ( `${ scheme }://${ host }:${ port }` );
 

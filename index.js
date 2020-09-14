@@ -22,12 +22,12 @@ paths: [
 ],
 setting: {
 
-input: {
+input: {},
+ws: {
 
 scheme: 'ws',
 host: 'localhost',
 port: 1300,
-target: 'ws'
 
 }
 

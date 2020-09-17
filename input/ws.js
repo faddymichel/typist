@@ -14,6 +14,12 @@ input .ws .onopen = ( event ) => {
 
 };
 
+input .ws .onclose = () => {
+
+console .error ( 'connection closed' );
+
+};
+
 input .ws .onerror = ( event ) => {
 
 console .error ( event );
@@ -23,14 +29,7 @@ output ( 'main', 'h6', {}, 'input could not serve you this time!' );
 
 input .ws .onmessage = ( event ) => {
 
-if ( event .data instanceof Blob ) {
-
-const reader = new FileReader ();
- reader .onload = () => {
-
-const line = reader .result .trim () .split ( ' ' );
-
-console .log ( 'line:', reader .result );
+const line = event .data .trim () .split ( ' ' );
 
 scenarist .play ( {
 
@@ -41,15 +40,9 @@ details: line .splice ( 2 ) .join ( ' ' )
 } )
 .catch ( ( error ) => {
 
-console .error ( '#error', error );
+//console .error ( '#error', error );
 
 } );
-
-};
-
-reader .readAsText ( event .data );
-
-}
 
 };
 

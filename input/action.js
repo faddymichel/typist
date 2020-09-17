@@ -1,17 +1,22 @@
 export const establishment = function establishment () {
 
-const { scenarist, output } = this;
+const { scenarist, action, input, output } = this;
 
 document .onkeydown = document .onkeyup = ( event ) => {
 
-if ( document .activeElement .id !== 'text' ) {
+if ( event .repeat )
+return;
 
-const scenarioEvent = {};
+if ( document .activeElement .id !== 'text' && typeof action [ event .key ] === 'object' ) {
 
-scenarioEvent .event = event .type === 'keydown' ? `${ event .key }:on` : `${ event .key }:off`;
-scenarioEvent .action = event .key;
+const scenarioEvent = Object .assign ( {}, action [ event .key ], {
+
+details: event .type === 'keydown' ? 'on' : 'off'
+
+} );
 
 scenarist .play ( scenarioEvent )
+.then ( input )
 .catch ( ( error ) => {
 
 console .error ( '#error', error );

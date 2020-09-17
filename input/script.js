@@ -1,6 +1,6 @@
 export const establishment = function establishment () {
 
-const { scenarist, output } = this;
+const { scenarist, input, output } = this;
 
 const onkeyup = ( event ) => {
 
@@ -17,8 +17,9 @@ scenarioEvent .action = line [ 1 ];
 scenarioEvent .details = line .splice ( 2 ) .join ( ' ' );
 
 scenarist .play ( scenarioEvent )
-.then ( () => {
+.then ( ( dialogue ) => {
 
+input ( dialogue );
 dialog .value = '';
 
 } )

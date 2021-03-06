@@ -1,8 +1,11 @@
-export const establishment = function () {
+export const events = [ '#o', '#output' ];
+export const action = {};
+
+action [ '.i' ] = action [ '.init' ] = function init () {
 
 const setting = this;
 
-setting .output = function output ( { selector, namespace, tag, attributes, content, html, reference } ) {
+setting .output = ( { selector, namespace, tag, attributes, content, html, reference } ) => {
 
 const parent = typeof selector === 'string' ? document .querySelector ( selector ) : null;
 

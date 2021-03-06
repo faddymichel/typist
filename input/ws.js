@@ -1,10 +1,13 @@
-export const establishment = function establishment () {
+export const character = {};
+
+character .events = [ 'ws', '#ws' ];
+character .action = function action ( script, cue, blooper ) {
 
 const setting = this;
 const { scenarist, input, output, ws } = setting;
 
 if ( typeof ws !== 'object' )
-return;
+return blooper ( '#ws #url #undefined' );
 
 const { scheme, host, port } = ws;
 
@@ -38,12 +41,15 @@ action: line [ 1 ],
 details: line .splice ( 2 ) .join ( ' ' )
 
 } )
+.then ( input )
 .catch ( ( error ) => {
 
-//console .error ( '#error', error );
+console .error ( '#error', '#ws', error );
 
 } );
 
 };
+
+cue ();
 
 };

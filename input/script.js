@@ -14,7 +14,7 @@ const line = dialog .value
 .split ( ' ' );
 scenarioEvent .event = line [ 0 ];
 scenarioEvent .action = line [ 1 ];
-scenarioEvent .details = line .splice ( 2 ) .join ( ' ' );
+scenarioEvent .details = line .splice ( 2 );
 
 scenarist .play ( scenarioEvent )
 .then ( ( dialogue ) => {
@@ -49,5 +49,41 @@ placeholder="Type a Script to Play">
 `
 
 } );
+
+};
+
+export const character = {};
+
+character .events = [ '#s', '#script' ];
+const action = character .action = {};
+
+action [ '#t' ] = action [ '#type' ] = function type ( script, cue, blooper ) {
+
+const { input } = this;
+const [ signature ] = script .details;
+const line = script .details .splice ( 1 );
+
+if ( line .length === 0 )
+return blooper ( 'Empty line' );
+
+input .script [ signature ] = input .script [ signature ] || [];
+input .script [ signature ] .push ( {
+
+event: line [ 0 ],
+action: line [ 1 ],
+details: line .splice ( 2 )
+
+} );
+
+};
+
+action [ '#p' ] = action [ '#play' ] = function play ( script, cue, blooper ) {
+
+const { input } = this;
+
+if ( input .script [ signature ] )
+cue ( input .script [ signature ] );
+
+blooper ( 'No script to play' );
 
 };

@@ -1,0 +1,23 @@
+{
+  "name": "typist",
+  "version": "1.0.0",
+  "description": "Constructor function for creating CLIs for a JavaScripting Language created using @faddymichel/language",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/faddymichel/typist.git"
+  },
+  "author": "Faddy Violette Michel <faddy.michel@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/faddymichel/typist/issues"
+  },
+  "homepage": "https://github.com/faddymichel/typist#readme",
+  "dependencies": {
+    "@faddymichel/language": "^1.0.1"
+  }
+}

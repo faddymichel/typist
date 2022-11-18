@@ -1,5 +1,5 @@
 {
-  "name": "typist",
+  "name": "@faddymichel/typist",
   "version": "1.0.0",
   "description": "Constructor function for creating CLIs for a JavaScripting Language created using @faddymichel/language",
   "type": "module",

@@ -44,11 +44,6 @@ value: function online ( line ) {
 
 const typist = this;
 
-line = line .trim ();
-
-if ( line === '' )
-return typist .prompt ();
-
 try {
 
 const resolution = typist .language ( Symbol .for ( 'language/enter' ), line );
@@ -57,7 +52,7 @@ if ( typeof resolution ?.language === 'function' && typeof resolution ?.prompt =
 
 typist .language = resolution .language;
 
-typist .setPrompt ( typist [ Symbol .for ( 'typist/prompt' ) ] + resolution .prompt .trim () + ' ' )
+typist .setPrompt ( resolution .prompt .trim () + ' ' + typist [ Symbol .for ( 'typist/prompt' ) ] );
 
 }
 
@@ -69,6 +64,9 @@ typist .prompt ();
 }
 
 catch ( error ) {
+
+if ( error .code === Symbol .for ( 'scenarist/error/unknown-direction' ) && [ undefined, '' ] .includes ( error .direction ) )
+return typist .online ( line .trim () + ' .' );
 
 typist .emit ( 'error', error );
 
@@ -135,7 +133,7 @@ value: function onerror ( error ) {
 
 const typist = this;
 
-typist .page .error ( `#error${ error ?.message .length ? ' ' + error .message : '' }` );
+typist .page .error ( `(${ error .toString () })` );
 typist .prompt ();
 
 }

@@ -2,21 +2,20 @@ import Typist from './index.js';
 
 const typist = new Typist ( {
 
-name: 'typist/example',
-version: '1.0.0',
+greeting: 'typist/example',
 script: {
 
-platters: {
+$platters: {
 
-chicken: {
+$chicken: {
 
-price: 8.00,
-description: 'Chicken over rice with fresh salad and your choice of sauces',
+$price: 8.00,
+$description: 'Chicken over rice with fresh salad and your choice of sauces',
 
-buy ( quantity ) {
+$buy ( quantity ) {
 
 const item = this;
-const order = item .order = item .order || [];
+const order = item .$order = item .$order || [];
 
 quantity = parseInt ( quantity ) || 1;
 

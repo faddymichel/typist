@@ -3,7 +3,7 @@ import { Interface, createInterface } from 'readline';
 import { Console } from 'console';
 import { createReadStream } from 'fs';
 
-export default function Typist ( { script, file, name, version } ) {
+export default function Typist ( { language, script, file, greeting } ) {
 
 const typist = Object .setPrototypeOf (
 
@@ -18,14 +18,14 @@ Typist .prototype
 
 );
 
-typist .language = new Language ( script );
+typist .language = typeof language === 'function' ? language : new Language ( script );
 typist .page = new Console ( typist .output );
 
 for (const event of [ 'line', 'SIGINT', 'close', 'error' ] )
 typist .on ( event, typist [ 'on' + event ] );
 
-if ( typeof name == 'string' && name .length )
-typist .page .log ( 'Welcome to ' + name + ( [ 'string', 'number' ] .includes ( typeof version ) ? ' v' + version : '' ) );
+if ( typeof greeting == 'string' && greeting .length )
+typist .page .log ( greeting );
 
 typist [ Symbol .for ( 'typist/prompt' ) ] = typist .getPrompt ();
 

@@ -1,9 +1,9 @@
-import Language from '@faddymichel/language';
+import Shell from '@faddymichel/shell';
 import { Interface, createInterface } from 'readline';
 import { Console } from 'console';
 import { createReadStream } from 'fs';
 
-export default function Typist ( { language, script, file, greeting } ) {
+export default function Typist ( { shell, script, file, greeting } ) {
 
 const typist = Object .setPrototypeOf (
 
@@ -11,14 +11,14 @@ Object .defineProperties ( createInterface ( {
 
 input: typeof file === 'string' ? createReadStream ( file ) : process .stdin,
 output: ! file ? process .stdout : null,
-completer: line => typist .language ( Symbol .for ( 'language/complete' ), line )
+completer: line => typist .shell ( Symbol .for ( 'shell/complete' ), line )
 
 } ), descriptors ),
 Typist .prototype
 
 );
 
-typist .language = typeof language === 'function' ? language : new Language ( script );
+typist .shell = typeof shell === 'function' ? shell : new Shell () [ Symbol .for ( 'shell/interpreter' ) ] ( script );
 typist .page = new Console ( typist .output );
 
 for (const event of [ 'line', 'SIGINT', 'close', 'error' ] )
@@ -46,11 +46,11 @@ const typist = this;
 
 try {
 
-const resolution = typist .language ( Symbol .for ( 'language/enter' ), line );
+const resolution = typist .shell ( Symbol .for ( 'shell/enter' ), line );
 
-if ( typeof resolution ?.language === 'function' && typeof resolution ?.prompt === 'string' ) {
+if ( typeof resolution ?.shell === 'function' && typeof resolution ?.prompt === 'string' ) {
 
-typist .language = resolution .language;
+typist .shell = resolution .shell;
 
 typist .setPrompt ( resolution .prompt .trim () + ' ' + typist [ Symbol .for ( 'typist/prompt' ) ] );
 
@@ -151,9 +151,9 @@ enumerable: true,
 value: function complete ( line ) {
 
 line = line .trimStart () .split ( /\s+/ );
-line = [ ... line .slice ( 0, -1 ), Symbol .for ( 'language/complete' ), line [ line .length - 1 ] ];
+line = [ ... line .slice ( 0, -1 ), Symbol .for ( 'shell/complete' ), line [ line .length - 1 ] ];
 
-return this .language ( ... line );
+return this .shell ( ... line );
 
 }
 

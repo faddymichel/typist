@@ -3,7 +3,7 @@ import { Interface, createInterface } from 'readline';
 import { Console } from 'console';
 import { createReadStream } from 'fs';
 
-export default function Typist ( { shell, script, file, greeting } ) {
+export default function Typist ( { play, script, file, greeting } ) {
 
 const typist = Object .setPrototypeOf (
 
@@ -11,14 +11,14 @@ Object .defineProperties ( createInterface ( {
 
 input: typeof file === 'string' ? createReadStream ( file ) : process .stdin,
 output: ! file ? process .stdout : null,
-completer: line => typist .shell ( Symbol .for ( 'shell/complete' ), line )
+completer: line => typist .play ( Symbol .for ( 'shell/complete' ), line )
 
 } ), descriptors ),
 Typist .prototype
 
 );
 
-typist .shell = typeof shell === 'function' ? shell : new Shell () [ Symbol .for ( 'shell/interpreter' ) ] ( script );
+typist .play = typeof play === 'function' ? play : new Shell ( script ) [ Symbol .for ( 'shell/play' ) ];
 typist .page = new Console ( typist .output );
 
 for (const event of [ 'line', 'SIGINT', 'close', 'error' ] )
@@ -40,17 +40,19 @@ const descriptors = {
 online: {
 
 enumerable: true,
-value: function online ( line ) {
+value: async function online ( line ) {
 
 const typist = this;
 
+typist .pause ();
+
 try {
 
-const resolution = typist .shell ( Symbol .for ( 'shell/enter' ), line );
+const resolution = await typist .play ( Symbol .for ( 'shell/enter' ), line );
 
-if ( typeof resolution ?.shell === 'function' && typeof resolution ?.prompt === 'string' ) {
+if ( typeof resolution ?.play === 'function' && typeof resolution ?.prompt === 'string' ) {
 
-typist .shell = resolution .shell;
+typist .play = resolution .play;
 
 typist .setPrompt ( resolution .prompt .trim () + ' ' + typist [ Symbol .for ( 'typist/prompt' ) ] );
 
@@ -59,13 +61,22 @@ typist .setPrompt ( resolution .prompt .trim () + ' ' + typist [ Symbol .for ( '
 else if ( [ 'string', 'number', 'boolean' ] .includes ( typeof resolution ) )
 typist .page .log ( resolution );
 
+if ( typist .listenerCount ( 'post' ) )
+await new Promise ( cue => {
+
+typist .emit ( 'post', resolution, cue );
+
+} );
+
+typist .resume ();
+
 typist .prompt ();
 
 }
 
 catch ( error ) {
 
-if ( error .code === Symbol .for ( 'scenarist/error/unknown-direction' ) && [ undefined, '' ] .includes ( error .direction ) )
+if ( error .code === Symbol .for ( 'play/error/unknown-direction' ) && [ undefined, '' ] .includes ( error .direction ) )
 return typist .online ( line .trim () + ' .' );
 
 typist .emit ( 'error', error );
@@ -153,7 +164,7 @@ value: function complete ( line ) {
 line = line .trimStart () .split ( /\s+/ );
 line = [ ... line .slice ( 0, -1 ), Symbol .for ( 'shell/complete' ), line [ line .length - 1 ] ];
 
-return this .shell ( ... line );
+return this .play ( ... line );
 
 }
 
